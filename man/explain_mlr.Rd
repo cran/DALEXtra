@@ -4,16 +4,29 @@
 \alias{explain_mlr}
 \title{Create explainer from your mlr model}
 \usage{
-explain_mlr(model, data = NULL, y = NULL, predict_function = NULL,
-  residual_function = NULL, ..., label = NULL, verbose = TRUE,
-  precalculate = TRUE)
+explain_mlr(
+  model,
+  data = NULL,
+  y = NULL,
+  weights = NULL,
+  predict_function = NULL,
+  residual_function = NULL,
+  ...,
+  label = NULL,
+  verbose = TRUE,
+  precalculate = TRUE,
+  colorize = TRUE,
+  model_info = NULL
+)
 }
 \arguments{
 \item{model}{object - a model to be explained}
 
 \item{data}{data.frame or matrix - data that was used for fitting. If not provided then will be extracted from the model. Data should be passed without target column (this shall be provided as the \code{y} argument). NOTE: If target variable is present in the \code{data}, some of the functionalities my not work properly.}
 
-\item{y}{numeric vector with outputs / scores. If provided then it shall have the same size as \code{data}}
+\item{y}{numeric vector with outputs / scores. If provided then it shall have the same size as \code{data}.}
+
+\item{weights}{numeric vector with sampling weights. By default it's \code{NULL}. If provided then it shall have the same length as \code{data}}
 
 \item{predict_function}{function that takes two arguments: model and new data and returns numeric vector with predictions}
 
@@ -26,6 +39,10 @@ explain_mlr(model, data = NULL, y = NULL, predict_function = NULL,
 \item{verbose}{if TRUE (default) then diagnostic messages will be printed}
 
 \item{precalculate}{if TRUE (default) then 'predicted_values' and 'residuals' are calculated when explainer is created. This will happenn also if 'verbose' is TRUE}
+
+\item{colorize}{if TRUE (default) then \code{WARNINGS}, \code{ERRORS} and \code{NOTES} are colorized. Will work only in the R console.}
+
+\item{model_info}{a named list (\code{package}, \code{version}, \code{type}) containg information about model. If \code{NULL}, \code{DALEX} will seek for information on it's own.}
 }
 \value{
 explainer object (\code{\link[DALEX]{explain}}) ready to work with DALEX

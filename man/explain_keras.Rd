@@ -4,10 +4,23 @@
 \alias{explain_keras}
 \title{Wrapper for Python Keras Models}
 \usage{
-explain_keras(path, yml = NULL, condaenv = NULL, env = NULL,
-  data = NULL, y = NULL, predict_function = NULL,
-  residual_function = NULL, ..., label = NULL, verbose = TRUE,
-  precalculate = TRUE)
+explain_keras(
+  path,
+  yml = NULL,
+  condaenv = NULL,
+  env = NULL,
+  data = NULL,
+  y = NULL,
+  weights = NULL,
+  predict_function = NULL,
+  residual_function = NULL,
+  ...,
+  label = NULL,
+  verbose = TRUE,
+  precalculate = TRUE,
+  colorize = TRUE,
+  model_info = NULL
+)
 }
 \arguments{
 \item{path}{a path to the pickle file. Can be used without other arguments if you are sure that active Python version match pickle version.}
@@ -22,6 +35,8 @@ explain_keras(path, yml = NULL, condaenv = NULL, env = NULL,
 
 \item{y}{vector that will be passed to \code{\link[DALEX]{explain}}.}
 
+\item{weights}{numeric vector with sampling weights. By default it's \code{NULL}. If provided then it shall have the same length as \code{data}}
+
 \item{predict_function}{predict function that will be passed into \code{\link[DALEX]{explain}}. If NULL, default will be used.}
 
 \item{residual_function}{residual function that will be passed into \code{\link[DALEX]{explain}}. If NULL, default will be used.}
@@ -32,7 +47,11 @@ explain_keras(path, yml = NULL, condaenv = NULL, env = NULL,
 
 \item{verbose}{bool that will be passed into \code{\link[DALEX]{explain}}. If NULL, default will be used.}
 
-\item{precalculate}{if TRUE (default) then 'predicted_values' and 'residuals' are calculated when \code{\link[DALEX]{explain}} is created. This will happenn also if 'verbose' is TRUE.}
+\item{precalculate}{if TRUE (default) then 'predicted_values' and 'residuals' are calculated when explainer is created. This will happenn also if 'verbose' is TRUE.}
+
+\item{colorize}{if TRUE (default) then \code{WARNINGS}, \code{ERRORS} and \code{NOTES} are colorized. Will work only in the R console.}
+
+\item{model_info}{a named list (\code{package}, \code{version}, \code{type}) containg information about model. If \code{NULL}, \code{DALEX} will seek for information on it's own.}
 }
 \value{
 An object of the class 'explainer'.
@@ -70,7 +89,7 @@ exported from Python via pickle file.
 }
 \examples{
 library("DALEXtra")
-if(DALEXtra:::is_conda()) {
+\donttest{
    # Explainer build (Keep in mind that 9th column is target)
    test_data <-
    read.csv(
@@ -79,15 +98,13 @@ if(DALEXtra:::is_conda()) {
    # Keep in mind that when pickle is being built and loaded,
    # not only Python version but libraries versions has to match aswell
    explainer <- explain_keras(system.file("extdata", "keras.pkl", package = "DALEXtra"),
-   yml = system.file("extdata", "testing_environment.yml", package = "DALEXtra"),
+   conda = "myenv",
    data = test_data[,1:8], y = test_data[,9])
    plot(model_performance(explainer))
 
    # Predictions with newdata
    predict(explainer, test_data[1:10,1:8])
 
-} else {
-  print('Conda is required.')
 }
 
 }

@@ -18,6 +18,7 @@
 #' @param cutoff - Threshold for categorical data. Entries less frequent than specified value will be merged into one category.
 #' @param cutoff_name - Name for new category that arised after merging entries less frequent than \code{cutoff}
 #' @param factor_conversion_threshold - Numeric columns with lower number of unique values than value of this parameter will be treated as factors
+#' @param categories - a named list of variable names that will be plotted in a different colour. By deafault it is partitioned on Explanatory, External and Target.
 #' @param show_info - Logical value indicating if progress bar should be shown.
 #'
 #' @return An object of the class \code{funnel_measure}
@@ -30,6 +31,7 @@
 #'    \item \code{Measure} Difference in measures. Positive value indicates that champion was better, while negative that challenger.
 #'    \item \code{Label} String that defines subset of \code{Variable} values (partition rule).
 #'    \item \code{Challenger} Label of challenger explainer that was used in \code{Measure}
+#'    \item \code{Category} a category of the variable passed to function
 #'    }
 #' \item \code{models_info} data.frame containig inforamtion about models used in analysys
 #' }
@@ -83,7 +85,8 @@ funnel_measure <-
            cutoff = 0.01,
            cutoff_name = "Other",
            factor_conversion_threshold = 7,
-           show_info = TRUE) {
+           show_info = TRUE,
+           categories = NULL) {
     data <- champion$data
 
     if (class(challengers) == "explainer") {
@@ -133,7 +136,7 @@ funnel_measure <-
       if (is.numeric(col)) {
         #Separate case for first entry as it has to be equal on the both sides of compratment due to semi constant variables
         quantiles <-
-          ceiling(quantile(col, probs = seq(0, 1, length.out = nbins+1)))
+          round(quantile(col, probs = seq(0, 1, length.out = nbins+1)), 2)
         scoring_data <-
           data[(quantiles[1] <= col & col <= quantiles[2]),]
         scoring_y <-
@@ -208,7 +211,7 @@ funnel_measure <-
             col[col == name] <- cutoff_name
           }
         }
-        for (level in unique(col)) {
+        for (level in sort(unique(col))) {
           scoring_data <-
             data[col == level,]
           scoring_y <-
@@ -239,8 +242,35 @@ funnel_measure <-
       } else {
         stop(paste("Not recognizable column type"), col_names[col_index])
       }
-      setTxtProgressBar(pb, col_index)
+
+      if (show_info) setTxtProgressBar(pb, col_index)
+
       col_index <- col_index + 1
+    }
+    if (is.null(categories)) {
+      data_names <- names(partition_data)
+      features <- data_names[data_names %in% names(champion$data)]
+      target_check <-  apply(partition_data, 2, function(x) {
+        all(as.character(x) == as.character(champion$y))
+      })
+      target <- NULL
+      if (any(target_check)) {
+        target <- data_names[target_check]
+      }
+      other_variables <- setdiff(data_names, c(features, target))
+      categories <- list(Explanatory = features, Target = target, External = other_variables)
+    }
+    ret$Category <- ""
+    for (i in 1:length(categories)) {
+      if (length(categories[[i]]) > 0){
+        for (variable in categories[[i]]) {
+          ret[ret$Variable == variable,]$Category <- names(categories)[i]
+        }
+      }
+    }
+    # Check if they are Variables without category
+    if (length(ret[ret$Category == "",]$Category) > 0){
+      ret[ret$Category == "",]$Category <- "Other Variables"
     }
     ret <- list(data = ret, models_info = models_info)
     names(ret$data$Label) <- NULL
