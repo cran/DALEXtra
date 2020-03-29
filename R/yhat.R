@@ -10,7 +10,6 @@
 #' \item \code{h2o} see more in \code{\link{explain_h2o}}
 #' \item \code{scikit-learn} see more in \code{\link{explain_scikitlearn}}
 #' \item \code{keras} see more in \code{\link{explain_keras}}
-#' \item \code{mljar} see more in \code{\link{explain_mljar}}
 #' \item \code{mlr3} see more in \code{\link{explain_mlr3}}
 #' }
 #'
@@ -29,9 +28,18 @@ yhat.WrappedModel <- function(X.model, newdata, ...) {
          "classif" = {
            pred <- predict(X.model, newdata = newdata)
            if ("truth" %in% colnames(pred$data)){
-             response <- pred$data[, 2]
+             if (ncol(pred$data) == 4) {
+               response <- pred$data[, 3]
+             } else {
+               response <- pred$data[, -c(1, ncol(pred$data))]
+             }
+
            } else {
-             response <- pred$data[, 1]
+             if (ncol(pred$data) == 3) {
+               response <- pred$data[, 2]
+             } else {
+               response <- pred$data[, -ncol(pred$data)]
+             }
            }
            response
          },
@@ -57,9 +65,16 @@ yhat.h2o <- function(X.model, newdata, ...) {
       if (!class(newdata) == "H2OFrame") {
         newdata <- h2o::as.h2o(newdata)
       }
-      res <-
-        as.data.frame(h2o::h2o.predict(X.model, newdata = newdata))
-      res$p1
+      res <- as.data.frame(h2o::h2o.predict(X.model, newdata = newdata))
+      res[,2]
+
+    },
+    "H2OMultinomialModel" = {
+      if (!class(newdata) == "H2OFrame") {
+        newdata <- h2o::as.h2o(newdata)
+      }
+      res <- as.data.frame(h2o::h2o.predict(X.model, newdata = newdata))
+      res[,-1]
     },
     stop("Model is not explainable h2o object")
   )
@@ -75,14 +90,17 @@ yhat.H2OBinomialModel <- yhat.h2o
 
 #' @rdname yhat
 #' @export
+yhat.H2OMultinomialModel <- yhat.h2o
+
+#' @rdname yhat
+#' @export
 yhat.scikitlearn_model <- function(X.model, newdata, ...) {
   if ("predict_proba" %in% names(X.model)) {
-    # we take second cloumn which indicates probability of `1` to adapt to DALEX predict functions (yhat). If output is one column it will be taken
-    success <-
-      try(pred <-  X.model$predict_proba(newdata)[, 2], silent = TRUE)
-    if (class(success) == "try-error") {
-      pred <-  X.model$predict_proba(newdata)[, 1]
+    pred <-  X.model$predict_proba(newdata)
+    if (ncol(pred) == 2) {
+      pred <- pred[,2]
     }
+
   } else {
     pred <-  X.model$predict(newdata)
   }
@@ -93,19 +111,19 @@ yhat.scikitlearn_model <- function(X.model, newdata, ...) {
 #' @export
 yhat.keras <- function(X.model, newdata, ...) {
   if ("predict_proba" %in% names(X.model)) {
-    # We take first column due to keras not storing matrix when binary classification
-    pred <-  X.model$predict_proba(newdata)[, 1]
+    pred <-  X.model$predict_proba(newdata)
+    if (ncol(pred) == 1) {
+      pred <- as.numeric(pred)
+    }
   } else {
     pred <-  X.model$predict(newdata)
   }
   pred
 }
 
-#' @rdname yhat
-#' @export
-yhat.mljar_model <- function(X.model, newdata, ...) {
-  unlist(mljar::mljar_predict(model = X.model, x_pred = newdata, project_title = X.model$project), use.names = FALSE)
-}
+#' yhat.mljar_model <- function(X.model, newdata, ...) {
+#'   unlist(mljar::mljar_predict(model = X.model, x_pred = newdata, project_title = X.model$project), use.names = FALSE)
+#' }
 
 #' @rdname yhat
 #' @export
@@ -116,5 +134,12 @@ yhat.LearnerRegr <- function(X.model, newdata, ...) {
 #' @rdname yhat
 #' @export
 yhat.LearnerClassif <- function(X.model, newdata, ...) {
-  predict(X.model, newdata = newdata, predict_type = "prob", ...)[,1]
+  pred <- X.model$predict_newdata(newdata)
+
+  # return probabilities for class: 1
+  response <- pred$prob
+  if (ncol(response) == 2) {
+    response <- response[,2]
+  }
+  response
 }

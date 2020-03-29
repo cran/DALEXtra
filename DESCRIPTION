@@ -1,11 +1,12 @@
 Package: DALEXtra
 Title: Extension for 'DALEX' Package
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     c(person(given = "Szymon",
            family = "Maksymiuk",
            role = c("aut", "cre"),
-           email = "sz.maksymiuk@gmail.com"),
+           email = "sz.maksymiuk@gmail.com",
+           comment = c(ORCID = "0000-0002-3120-1601")),
       person(given = "Przemyslaw", 
              family = "Biecek", 
              email = "przemyslaw.biecek@gmail.com", 
@@ -26,22 +27,23 @@ Description: Provides wrapper of various machine learning models.
   to model performance across subsets of test data presented in Funnel Plot. 
   Third branch of 'DALEXtra' package is aspect importance analysis
   that provides instance-level explanations for the groups of explanatory variables.
-Depends: R (>= 3.5.0), DALEX (>= 0.4.9)
+Depends: R (>= 3.5.0), DALEX (>= 1.0.0)
 License: GPL
+Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.0
+RoxygenNote: 7.1.0
 Imports: reticulate, ggplot2, glmnet, ggdendro, gridExtra
-Suggests: auditor, ingredients, gbm, ggrepel, h2o, mljar, mlr, mlr3,
+Suggests: auditor, ingredients, gbm, ggrepel, h2o, mlr, mlr3,
         randomForest, rmarkdown, rpart, xgboost, testthat
 URL: https://ModelOriented.github.io/DALEXtra/,
         https://github.com/ModelOriented/DALEXtra
 BugReports: https://github.com/ModelOriented/DALEXtra/issues
 NeedsCompilation: no
-Packaged: 2019-11-18 15:37:17 UTC; szyna
-Author: Szymon Maksymiuk [aut, cre],
+Packaged: 2020-03-29 13:40:11 UTC; szyna
+Author: Szymon Maksymiuk [aut, cre] (<https://orcid.org/0000-0002-3120-1601>),
   Przemyslaw Biecek [aut] (<https://orcid.org/0000-0001-8423-1823>),
   Katarzyna Pekala [aut],
   Anna Kozak [ctb]
 Maintainer: Szymon Maksymiuk <sz.maksymiuk@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-11-18 16:00:02 UTC
+Date/Publication: 2020-03-29 15:00:12 UTC

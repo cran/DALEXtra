@@ -19,7 +19,8 @@ explain_scikitlearn(
   verbose = TRUE,
   precalculate = TRUE,
   colorize = TRUE,
-  model_info = NULL
+  model_info = NULL,
+  type = NULL
 )
 }
 \arguments{
@@ -47,11 +48,13 @@ explain_scikitlearn(
 
 \item{verbose}{bool that will be passed into \code{\link[DALEX]{explain}}. If NULL, default will be used.}
 
-\item{precalculate}{if TRUE (default) then 'predicted_values' and 'residuals' are calculated when explainer is created. This will happenn also if 'verbose' is TRUE.}
+\item{precalculate}{if TRUE (default) then 'predicted_values' and 'residuals' are calculated when explainer is created.}
 
 \item{colorize}{if TRUE (default) then \code{WARNINGS}, \code{ERRORS} and \code{NOTES} are colorized. Will work only in the R console.}
 
 \item{model_info}{a named list (\code{package}, \code{version}, \code{type}) containg information about model. If \code{NULL}, \code{DALEX} will seek for information on it's own.}
+
+\item{type}{type of a model, either \code{classification} or \code{regression}. If not specified then \code{type} will be extracted from \code{model_info}.}
 }
 \value{
 An object of the class 'explainer'. It has additional field param_set when user can check parameters of scikitlearn model
@@ -101,8 +104,7 @@ and compare it with other models, using R tools like DALEX. This function create
 exported from Python via pickle file.
 }
 \examples{
-library("DALEXtra")
-if(DALEXtra:::is_conda()) {
+\donttest{
    # Explainer build (Keep in mind that 18th column is target)
    titanic_test <- read.csv(system.file("extdata", "titanic_test.csv", package = "DALEXtra"))
    # Keep in mind that when pickle is being built and loaded,
@@ -115,8 +117,6 @@ if(DALEXtra:::is_conda()) {
    # Predictions with newdata
    predict(explainer, titanic_test[1:10,1:17])
 
-} else {
-  print('Conda is required.')
 }
 
 }
