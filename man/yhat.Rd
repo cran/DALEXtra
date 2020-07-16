@@ -9,6 +9,8 @@
 \alias{yhat.keras}
 \alias{yhat.LearnerRegr}
 \alias{yhat.LearnerClassif}
+\alias{yhat.GraphLearner}
+\alias{yhat.xgb.Booster}
 \title{Wrapper over the predict function}
 \usage{
 \method{yhat}{WrappedModel}(X.model, newdata, ...)
@@ -26,6 +28,10 @@
 \method{yhat}{LearnerRegr}(X.model, newdata, ...)
 
 \method{yhat}{LearnerClassif}(X.model, newdata, ...)
+
+\method{yhat}{GraphLearner}(X.model, newdata, ...)
+
+\method{yhat}{xgb.Booster}(X.model, newdata, ...)
 }
 \arguments{
 \item{X.model}{object - a model to be explained}
@@ -50,5 +56,6 @@ Currently supported packages are:
 \item \code{scikit-learn} see more in \code{\link{explain_scikitlearn}}
 \item \code{keras} see more in \code{\link{explain_keras}}
 \item \code{mlr3} see more in \code{\link{explain_mlr3}}
+\item \code{xgboost} see more in \code{\link{explain_xgboost}}
 }
 }

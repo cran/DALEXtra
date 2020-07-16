@@ -5,6 +5,8 @@
 #' are stored
 #'
 #' @param model - model object
+#' @param is_multiclass - if TRUE and task is classification, then multitask classification is set. Else is omitted. If \code{model_info}
+#' was executed withing \code{explain} function. DALEX will recognize subtype on it's own. @param is_multiclass
 #' @param ... - another arguments
 #'
 #' Currently supported packages are:
@@ -14,22 +16,20 @@
 #' \item \code{scikit-learn} models created with \code{scikit-learn} pyhton library and accesed via \code{reticulate}
 #' \item \code{keras} models created with \code{keras} pyhton library and accesed via \code{reticulate}
 #' \item \code{mlr3} models created with \code{mlr3} package
+#' \item \code{xgboost} models created with \code{xgboost} package
 #' }
 #'
 #' @return A named list of class \code{model_info}
-
-
 #' @rdname model_info
 #' @export
-model_info.WrappedModel <- function(model, ...) {
-  switch(model$task.desc$type,
-         "classif" = {
-           type <- "classification"
-         },
-         "regr" = {
-           type <- "regression"
-         },
-         stop("Model is not explainable mlr object"))
+model_info.WrappedModel <- function(model, is_multiclass = FALSE, ...) {
+  if (model$task.desc$type == "classif" & is_multiclass) {
+    type <- "multiclass"
+  } else if (model$task.desc$type == "classif" & !is_multiclass) {
+    type <- "classification"
+  } else {
+    type <- "regression"
+  }
   package_wrapper <- "mlr"
   ver_wrapper <- get_pkg_ver_safe(package_wrapper)
   package <- model$learner$package
@@ -39,7 +39,7 @@ model_info.WrappedModel <- function(model, ...) {
   model_info
 }
 
-model_info.h2o <- function(model, ...) {
+model_info.h2o <- function(model, is_multiclass = FALSE, ...) {
   switch(
     class(model),
     "H2ORegressionModel" = {
@@ -47,6 +47,9 @@ model_info.h2o <- function(model, ...) {
     },
     "H2OBinomialModel" = {
       type <- "classification"
+    },
+    "H2OMultinomialModel" = {
+      type <- "multiclass"
     },
     stop("Model is not explainable h2o object")
   )
@@ -69,10 +72,16 @@ model_info.H2OBinomialModel <- model_info.h2o
 
 #' @rdname model_info
 #' @export
-model_info.scikitlearn_model <- function(model, ...) {
-  if ("predict_proba" %in% names(model)) {
+model_info.H2OMultinomialModel <- model_info.h2o
+
+#' @rdname model_info
+#' @export
+model_info.scikitlearn_model <- function(model, is_multiclass = FALSE, ...) {
+  if ("predict_proba" %in% names(model) & is_multiclass) {
+    type <- "multiclass"
+  } else if ("predict_proba" %in% names(model) & !is_multiclass) {
     type <- "classification"
-  } else {
+  }else {
     type <- "regression"
   }
   package_wrapper <- "reticulate"
@@ -86,10 +95,12 @@ model_info.scikitlearn_model <- function(model, ...) {
 
 #' @rdname model_info
 #' @export
-model_info.keras <- function(model, ...) {
-  if ("predict_proba" %in% names(model)) {
+model_info.keras <- function(model, is_multiclass = FALSE, ...) {
+  if ("predict_proba" %in% names(model) & is_multiclass) {
+    type <- "multiclass"
+  } else if ("predict_proba" %in% names(model) & !is_multiclass) {
     type <- "classification"
-  } else {
+  }else {
     type <- "regression"
   }
   package_wrapper <- "reticulate"
@@ -102,7 +113,7 @@ model_info.keras <- function(model, ...) {
 }
 
 
-# model_info.mljar_model <- function(model, ...) {
+# model_info.mljar_model <- function(model, is_multiclass = FALSE, ...) {
 #   type <- "regression"
 #   package_wrapper <- "mljar"
 #   ver_wrapper <- as.character(utils::packageVersion("mljar"))
@@ -115,7 +126,7 @@ model_info.keras <- function(model, ...) {
 
 #' @rdname model_info
 #' @export
-model_info.LearnerRegr <- function(model, ...) {
+model_info.LearnerRegr <- function(model, is_multiclass = FALSE, ...) {
   type <- "regression"
   package_wrapper <- "mlr3"
   ver_wrapper <- get_pkg_ver_safe(package_wrapper)
@@ -128,8 +139,12 @@ model_info.LearnerRegr <- function(model, ...) {
 
 #' @rdname model_info
 #' @export
-model_info.LearnerClassif <- function(model, ...) {
-  type <- "classification"
+model_info.LearnerClassif <- function(model, is_multiclass = FALSE, ...) {
+  if (is_multiclass) {
+    type <- "multiclass"
+  } else {
+    type <- "classification"
+  }
   package_wrapper <- "mlr3"
   ver_wrapper <- get_pkg_ver_safe(package_wrapper)
   package <- model$packages
@@ -138,6 +153,37 @@ model_info.LearnerClassif <- function(model, ...) {
   class(model_info) <- "model_info"
   model_info
 }
+
+#' @rdname model_info
+#' @export
+model_info.GraphLearner <- function(model, is_multiclass = FALSE, ...) {
+  if ("prob" %in% model$predict_types) {
+    return(model_info.LearnerClassif(model, is_multiclass))
+  } else {
+    return(model_info.LearnerRegr(model, is_multiclass))
+  }
+}
+
+#' @rdname model_info
+#' @export
+model_info.xgb.Booster <- function(model, is_multiclass = FALSE, ...) {
+  task <- strsplit(model$params$objective, ":", fixed = TRUE)[[1]][1]
+  if (task == "multi") {
+    type <- "multiclass"
+  } else if (task == "binary") {
+    type <- "classification"
+  } else if (task == "reg") {
+    type <- "regression"
+  } else {
+    stop("Task has to be either multi, binary or reg")
+  }
+  package <- "xgboost"
+  ver <- get_pkg_ver_safe(package)
+  model_info <- list(package = package, ver = ver, type = type)
+  class(model_info) <- "model_info"
+  model_info
+}
+
 
 get_pkg_ver_safe <- function(package) {
   ver <- try(as.character(utils::packageVersion(package)), silent = TRUE)

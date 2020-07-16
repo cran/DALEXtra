@@ -4,28 +4,40 @@
 \alias{model_info.WrappedModel}
 \alias{model_info.H2ORegressionModel}
 \alias{model_info.H2OBinomialModel}
+\alias{model_info.H2OMultinomialModel}
 \alias{model_info.scikitlearn_model}
 \alias{model_info.keras}
 \alias{model_info.LearnerRegr}
 \alias{model_info.LearnerClassif}
+\alias{model_info.GraphLearner}
+\alias{model_info.xgb.Booster}
 \title{Exract info from model}
 \usage{
-\method{model_info}{WrappedModel}(model, ...)
+\method{model_info}{WrappedModel}(model, is_multiclass = FALSE, ...)
 
-\method{model_info}{H2ORegressionModel}(model, ...)
+\method{model_info}{H2ORegressionModel}(model, is_multiclass = FALSE, ...)
 
-\method{model_info}{H2OBinomialModel}(model, ...)
+\method{model_info}{H2OBinomialModel}(model, is_multiclass = FALSE, ...)
 
-\method{model_info}{scikitlearn_model}(model, ...)
+\method{model_info}{H2OMultinomialModel}(model, is_multiclass = FALSE, ...)
 
-\method{model_info}{keras}(model, ...)
+\method{model_info}{scikitlearn_model}(model, is_multiclass = FALSE, ...)
 
-\method{model_info}{LearnerRegr}(model, ...)
+\method{model_info}{keras}(model, is_multiclass = FALSE, ...)
 
-\method{model_info}{LearnerClassif}(model, ...)
+\method{model_info}{LearnerRegr}(model, is_multiclass = FALSE, ...)
+
+\method{model_info}{LearnerClassif}(model, is_multiclass = FALSE, ...)
+
+\method{model_info}{GraphLearner}(model, is_multiclass = FALSE, ...)
+
+\method{model_info}{xgb.Booster}(model, is_multiclass = FALSE, ...)
 }
 \arguments{
 \item{model}{- model object}
+
+\item{is_multiclass}{- if TRUE and task is classification, then multitask classification is set. Else is omitted. If \code{model_info}
+was executed withing \code{explain} function. DALEX will recognize subtype on it's own. @param is_multiclass}
 
 \item{...}{- another arguments
 
@@ -36,6 +48,7 @@ Currently supported packages are:
 \item \code{scikit-learn} models created with \code{scikit-learn} pyhton library and accesed via \code{reticulate}
 \item \code{keras} models created with \code{keras} pyhton library and accesed via \code{reticulate}
 \item \code{mlr3} models created with \code{mlr3} package
+\item \code{xgboost} models created with \code{xgboost} package
 }}
 }
 \value{

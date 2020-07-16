@@ -1,3 +1,24 @@
+DALEXtra 1.3.1
+----------------------------------------------------------------
+* In added `yhat.GraphLearner()` and `model_info.GraphLearner()` to handle GraphLearners `mlr3` objects.
+* New examples.
+
+DALEXtra 1.3.0
+----------------------------------------------------------------
+* In `explain_h2o()` data parameter will bo converted to data.frame if H2OFrame object was passed.
+* Aspect importance related functions set deprecated. Will be removed with next release.
+* `explain_xgboost()` function added
+
+DALEXtra 0.2.3
+----------------------------------------------------------------
+* DALEXtra now supports multiclass classification (accordingly to DALEX >= 1.3)
+* `funnel_mesure()` and `training_test_comparison()` recognizes type of the task and applies proper loss_function
+* `yhat.WrappedModel()` returns factor response if `predict.type` is not `prob`.
+
+DALEXtra 0.2.2
+----------------------------------------------------------------
+* `explain_h2o()` now supports `model` as `H2OAutoML`
+
 DALEXtra 0.2.1
 ----------------------------------------------------------------
 * Removed h2o::init() from explain_h2o()
