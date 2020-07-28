@@ -1,4 +1,9 @@
 context("champion_challenger")
+test_that("Report generates without errors", {
+
+if (!"CONDA_TEST" %in% names(Sys.getenv()) & .Platform$OS.type == "unix") {
+  skip("Test with windows")
+}
 
 library("mlr")
 library("DALEXtra")
@@ -35,8 +40,6 @@ fi <- ingredients::feature_importance(explainer_rf)
 
 report_data <- list(plot_data_1, plot_data_2, plot_data_3, feature_importance = fi)
 
-
-test_that("Report generates without errors", {
   expect_error(champion_challenger(report_data, dot_size = 3), NA)
 
 })

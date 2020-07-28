@@ -1,6 +1,6 @@
-0c58e84aecaec3fb92b4562c8cc07b14 *DESCRIPTION
+b25f44d356d7bc3c890e74c2ac17822c *DESCRIPTION
 12cc4ba4147940e49c56636914e9a1f2 *NAMESPACE
-bb8ef9e504a3f70573fab1750b729dcd *NEWS.md
+f1da373bbfa4289e3d8af0d69c1de6f3 *NEWS.md
 d43946bf906a5101ebfb9ad827ef08fe *R/aspect_importance.R
 ce5f3f5bbb7caff3ff7c1c2556481dba *R/champion_challenger.R
 8f2848c08a6ecc2dbd329905b96b4bc7 *R/create_env.R
@@ -69,12 +69,12 @@ c925de3b7361e1fbca10e266caca2eef *man/print.overall_comparison.Rd
 d9d03e797dd66d52e06d90169c6852df *man/yhat.Rd
 92b2e925c92367af4edfd20912d6114a *tests/testthat.R
 397e9e5f91f9cbb571a62a6e4e12996f *tests/testthat/helper-objects.R
-1f30985923d9c4869544130879d5a625 *tests/testthat/objects_for_tests.R
+bda0d939c666992928ff8a4385d9ffab *tests/testthat/objects_for_tests.R
 22dc9298c635685349e4f4a833d45b8b *tests/testthat/test_aspect_importance.R
-1e04c90e1587f6628e6d7015972ece3c *tests/testthat/test_champion_challenger.R
+4ff96891ceea0c6f71d5e333221a2090 *tests/testthat/test_champion_challenger.R
 05f6abf0b725ffd9366791a7eb85c367 *tests/testthat/test_create_env.R
 b16ab9e0265582be98c54cec93aae90b *tests/testthat/test_funnel_measure.R
-ec9b15e81cdd4d7679b83cd2e50dabdd *tests/testthat/test_h2o_explain.R
+e7501a005a63c35127ad83c83d1eeac3 *tests/testthat/test_h2o_explain.R
 d9847306c1ba7a8f4a4f7eb38afa107c *tests/testthat/test_keras_explain.R
 3bdaec98f73b1b5a18159a7368fa9960 *tests/testthat/test_ml3_explain.R
 905139df8973d023a4f95793c8016f57 *tests/testthat/test_mljar_explain.R

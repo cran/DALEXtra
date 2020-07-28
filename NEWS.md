@@ -1,3 +1,7 @@
+DALEXtra 1.3.2
+----------------------------------------------------------------
+* Fixed cran check results
+
 DALEXtra 1.3.1
 ----------------------------------------------------------------
 * In added `yhat.GraphLearner()` and `model_info.GraphLearner()` to handle GraphLearners `mlr3` objects.
