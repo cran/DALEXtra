@@ -1,3 +1,12 @@
+DALEXtra 2.1.1
+----------------------------------------------------------------
+* Fix CRAN results issues 
+
+DALEXtra 2.1
+----------------------------------------------------------------
+* Fix errors coming from the new reticulate version
+* Adjust explain functions to DALEX 2.1
+
 DALEXtra 2.0
 ----------------------------------------------------------------
 * `explain_tidymodels()` added as a support for tidymodels workflows.
