@@ -1,7 +1,7 @@
 #' Exract info from model
 #'
 #' This generic function let user extract base information about model. The function returns a named list of class \code{model_info} that
-#' contain about package of model, version and task type. For wrappers like \code{mlr} or \code{caret} both, package and wrapper inforamtion
+#' contain about package of model, version and task type. For wrappers like \code{mlr} or \code{caret} both, package and wrapper information
 #' are stored
 #'
 #' @param model - model object
@@ -9,12 +9,13 @@
 #' was executed withing \code{explain} function. DALEX will recognize subtype on it's own. @param is_multiclass
 #' @param ... - another arguments
 #'
+#' @details 
 #' Currently supported packages are:
 #' \itemize{
 #' \item \code{mlr} models created with \code{mlr} package
 #' \item \code{h2o} models created with \code{h2o} package
-#' \item \code{scikit-learn} models created with \code{scikit-learn} pyhton library and accesed via \code{reticulate}
-#' \item \code{keras} models created with \code{keras} pyhton library and accesed via \code{reticulate}
+#' \item \code{scikit-learn} models created with \code{scikit-learn} Python library and accessed via \code{reticulate}
+#' \item \code{keras} models created with \code{keras} Python library and accessed via \code{reticulate}
 #' \item \code{mlr3} models created with \code{mlr3} package
 #' \item \code{xgboost} models created with \code{xgboost} package
 #' \item \code{tidymodels} models created with \code{tidymodels} package
@@ -213,10 +214,29 @@ model_info.workflow <- function(model, is_multiclass = FALSE, ...) {
   model_info
 }
 
+#' @rdname model_info
+#' @export
+model_info.model_stack <- function(model, is_multiclass = FALSE, ...) {
+  if (model$mode == "classification" & is_multiclass) {
+    type <- "multiclass"
+  } else if (model$mode == "classification" & !is_multiclass) {
+    type <- "classification"
+  } else {
+    type <- "regression"
+  }
+  
+  package <- "stacks"
+  ver <- get_pkg_ver_safe(package)
+  model_info <- list(package = package, ver = ver, type = type)  
+  class(model_info) <- "model_info"
+  model_info
+}
+
+
 
 get_pkg_ver_safe <- function(package) {
   ver <- try(as.character(utils::packageVersion(package)), silent = TRUE)
-  if (class(ver) == "try-error") {
+  if (inherits(ver, "try-error")) {
     ver <- "Unknown"
   }
   ver

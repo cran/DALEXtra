@@ -12,6 +12,7 @@
 \alias{yhat.GraphLearner}
 \alias{yhat.xgb.Booster}
 \alias{yhat.workflow}
+\alias{yhat.model_stack}
 \title{Wrapper over the predict function}
 \usage{
 \method{yhat}{WrappedModel}(X.model, newdata, ...)
@@ -35,6 +36,8 @@
 \method{yhat}{xgb.Booster}(X.model, newdata, ...)
 
 \method{yhat}{workflow}(X.model, newdata, ...)
+
+\method{yhat}{model_stack}(X.model, newdata, ...)
 }
 \arguments{
 \item{X.model}{object - a model to be explained}
@@ -47,9 +50,9 @@
 An numeric vector of predictions
 }
 \description{
-These functios are default predict functions.
+These functions are default predict functions.
 Each function returns a single numeric score for each new observation.
-Those functions are very important since informations from many models have to be extracted with various techniques.
+Those functions are very important since information from many models have to be extracted with various techniques.
 }
 \details{
 Currently supported packages are:

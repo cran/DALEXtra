@@ -12,6 +12,7 @@
 \alias{model_info.GraphLearner}
 \alias{model_info.xgb.Booster}
 \alias{model_info.workflow}
+\alias{model_info.model_stack}
 \title{Exract info from model}
 \usage{
 \method{model_info}{WrappedModel}(model, is_multiclass = FALSE, ...)
@@ -35,6 +36,8 @@
 \method{model_info}{xgb.Booster}(model, is_multiclass = FALSE, ...)
 
 \method{model_info}{workflow}(model, is_multiclass = FALSE, ...)
+
+\method{model_info}{model_stack}(model, is_multiclass = FALSE, ...)
 }
 \arguments{
 \item{model}{- model object}
@@ -42,24 +45,25 @@
 \item{is_multiclass}{- if TRUE and task is classification, then multitask classification is set. Else is omitted. If \code{model_info}
 was executed withing \code{explain} function. DALEX will recognize subtype on it's own. @param is_multiclass}
 
-\item{...}{- another arguments
-
-Currently supported packages are:
-\itemize{
-\item \code{mlr} models created with \code{mlr} package
-\item \code{h2o} models created with \code{h2o} package
-\item \code{scikit-learn} models created with \code{scikit-learn} pyhton library and accesed via \code{reticulate}
-\item \code{keras} models created with \code{keras} pyhton library and accesed via \code{reticulate}
-\item \code{mlr3} models created with \code{mlr3} package
-\item \code{xgboost} models created with \code{xgboost} package
-\item \code{tidymodels} models created with \code{tidymodels} package
-}}
+\item{...}{- another arguments}
 }
 \value{
 A named list of class \code{model_info}
 }
 \description{
 This generic function let user extract base information about model. The function returns a named list of class \code{model_info} that
-contain about package of model, version and task type. For wrappers like \code{mlr} or \code{caret} both, package and wrapper inforamtion
+contain about package of model, version and task type. For wrappers like \code{mlr} or \code{caret} both, package and wrapper information
 are stored
+}
+\details{
+Currently supported packages are:
+\itemize{
+\item \code{mlr} models created with \code{mlr} package
+\item \code{h2o} models created with \code{h2o} package
+\item \code{scikit-learn} models created with \code{scikit-learn} Python library and accessed via \code{reticulate}
+\item \code{keras} models created with \code{keras} Python library and accessed via \code{reticulate}
+\item \code{mlr3} models created with \code{mlr3} package
+\item \code{xgboost} models created with \code{xgboost} package
+\item \code{tidymodels} models created with \code{tidymodels} package
+}
 }

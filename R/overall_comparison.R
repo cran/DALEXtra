@@ -1,7 +1,7 @@
 #' Compare champion with challengers globally
 #'
-#' The function creates objects that present global model perfromance using various measures. Those date can be easily
-#' ploted with \code{plot} function. It uses \code{auditor} package to create \code{\link[auditor]{model_performance}} of all passed
+#' The function creates objects that present global model performance using various measures. Those date can be easily
+#' plotted with \code{plot} function. It uses \code{auditor} package to create \code{\link[auditor]{model_performance}} of all passed
 #' explainers. Keep in mind that type of task has to be specified.
 #'
 #' @param champion - explainer of champion model.
@@ -14,7 +14,7 @@
 #' \itemize{
 #' \item \code{radar} list of \code{\link[auditor]{model_performance}} objects and other parameters that will be passed to generic \code{plot} function
 #' \item \code{accordance} data.frame object of champion responses and challenger's corresponding to them. Used to plot accordance.
-#' \item \code{models_info} data.frame containig inforamtion about models used in analysys.
+#' \item \code{models_info} data.frame containing information about models used in analysis
 #' }
 #'
 #' @rdname overall_comparison
@@ -36,7 +36,7 @@
 #' explainer_lm <- explain_mlr(model_lm, apartmentsTest, apartmentsTest$m2.price, label = "LM")
 #'
 #' learner_rf <- mlr::makeLearner(
-#'   "regr.randomForest"
+#'   "regr.ranger"
 #' )
 #' model_rf <- mlr::train(learner_rf, task)
 #' explainer_rf <- explain_mlr(model_rf, apartmentsTest, apartmentsTest$m2.price, label = "RF")
@@ -52,12 +52,12 @@
 #' }
 
 overall_comparison <- function(champion, challengers, type) {
-  if (class(challengers) == "explainer") {
+  if (inherits(challengers, "explainer")) {
     challengers <- list(challengers)
   }
   if (any(sapply(challengers, function(x) {
-    class(x) != "explainer"
-  })) | class(champion) != "explainer") {
+    !inherits(x, "explainer")
+  })) | !inherits(champion, "explainer")) {
     stop("Champion and all of challengers has to be explainer objects")
   }
 
@@ -130,7 +130,7 @@ overall_comparison <- function(champion, challengers, type) {
 #' explainer_lm <- explain_mlr(model_lm, apartmentsTest, apartmentsTest$m2.price, label = "LM")
 #'
 #' learner_rf <- mlr::makeLearner(
-#'   "regr.randomForest"
+#'   "regr.ranger"
 #' )
 #' model_rf <- mlr::train(learner_rf, task)
 #' explainer_rf <- explain_mlr(model_rf, apartmentsTest, apartmentsTest$m2.price, label = "RF")

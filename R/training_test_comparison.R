@@ -1,7 +1,7 @@
 #' Compare performance of model between training and test set
 #'
 #' Function \code{training_test_comparison} calculates performance of the provided model based on specified measure function.
-#' Response of the model is caluclated based on test data, extracted from the explainer and training data, provided by the user.
+#' Response of the model is calculated based on test data, extracted from the explainer and training data, provided by the user.
 #' Output can be easily shown with \code{print} or \code{plot} function.
 #'
 #' @param champion - explainer of champion model.
@@ -14,7 +14,7 @@
 #'
 #' @return An object of the class \code{training_test_comparison}.
 #'
-#' It is a named list containig:
+#' It is a named list containing:
 #' \itemize{
 #' \item \code{data} data.frame with following columns
 #'   \itemize{
@@ -23,7 +23,7 @@
 #'   \item \code{label} label of explainer
 #'   \item \code{type} flag that indicates if explainer was passed as champion or as challenger.
 #' }
-#' \item \code{models_info} data.frame containig inforamtion about models used in analysys
+#' \item \code{models_info} data.frame containing information about models used in analysis
 #' }
 
 #'
@@ -45,7 +45,7 @@
 #' explainer_lm <- explain_mlr(model_lm, apartmentsTest, apartmentsTest$m2.price, label = "LM")
 #'
 #' learner_rf <- mlr::makeLearner(
-#' "regr.randomForest"
+#' "regr.ranger"
 #' )
 #' model_rf <- mlr::train(learner_rf, task)
 #' explainer_rf <- explain_mlr(model_rf, apartmentsTest, apartmentsTest$m2.price, label = "RF")
@@ -67,13 +67,13 @@ training_test_comparison <- function(champion,
                                      training_y,
                                      measure_function = NULL) {
 
-  if (class(challengers) == "explainer") {
+  if (inherits(challengers, "explainer")) {
     challengers <- list(challengers)
   }
 
   if (any(sapply(challengers, function(x) {
-    class(x) != "explainer"
-  })) | class(champion) != "explainer") {
+    !inherits(x, "explainer")
+  })) | !inherits(champion, "explainer")) {
     stop("Champion and all of challengers has to be explainer objects")
   }
 
@@ -153,7 +153,7 @@ training_test_comparison <- function(champion,
 #' explainer_lm <- explain_mlr(model_lm, apartmentsTest, apartmentsTest$m2.price, label = "LM")
 #'
 #' learner_rf <- mlr::makeLearner(
-#' "regr.randomForest"
+#' "regr.ranger"
 #' )
 #' model_rf <- mlr::train(learner_rf, task)
 #' explainer_rf <- explain_mlr(model_rf, apartmentsTest, apartmentsTest$m2.price, label = "RF")

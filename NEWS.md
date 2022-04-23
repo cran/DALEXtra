@@ -1,3 +1,15 @@
+DALEXtra 2.2.0
+----------------------------------------------------------------
+* bump the requirement for `DALEX` to 2.4.0.
+* remove `randomForest` from suggest due to it enforcing R v4.1 (changed to `ranger`).
+* fix `predict_surrogate()` when `new_observation` has too many variables (e.g. target outcome).
+* auto-convert the `mlr3` learner-like objects with `mlr3::as_learner()` in `explain_mlr3()`.
+* Skip `explain_keras` and `explain_scikitlearn` examples while running on macOS as they can rise false-positive errors during R CMD check for some versions of macOS. The very same code still executes properly in tests.
+* Skip check if the model is trained in `explain_tidymodels` if the model inherits from `model_fit` class.
+* Add support for stacked tidymodels (`stacks` package).
+* Add `dalex_load_explainer` function.
+* Clear up documentation.
+
 DALEXtra 2.1.1
 ----------------------------------------------------------------
 * Fix CRAN results issues 

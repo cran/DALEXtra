@@ -15,7 +15,7 @@
 ggplot object
 }
 \description{
-Function \code{plot.training_test_comparison} plots dependecy between model performance on test and trainig dataset based on
+Function \code{plot.training_test_comparison} plots dependency between model performance on test and training dataset based on
 \code{training_test_comparison} object. Green line indicates \code{y = x} line.
 }
 \examples{
@@ -34,7 +34,7 @@ model_lm <- mlr::train(learner_lm, task)
 explainer_lm <- explain_mlr(model_lm, apartmentsTest, apartmentsTest$m2.price, label = "LM")
 
 learner_rf <- mlr::makeLearner(
-"regr.randomForest"
+"regr.ranger"
 )
 model_rf <- mlr::train(learner_rf, task)
 explainer_rf <- explain_mlr(model_rf, apartmentsTest, apartmentsTest$m2.price, label = "RF")
