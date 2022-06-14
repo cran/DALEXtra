@@ -1,6 +1,6 @@
 Package: DALEXtra
 Title: Extension for 'DALEX' Package
-Version: 2.2.0
+Version: 2.2.1
 Authors@R: 
     c(person(given = "Szymon",
            family = "Maksymiuk",
@@ -37,11 +37,11 @@ URL: https://ModelOriented.github.io/DALEXtra/,
         https://github.com/ModelOriented/DALEXtra
 BugReports: https://github.com/ModelOriented/DALEXtra/issues
 NeedsCompilation: no
-Packaged: 2022-04-23 00:22:42 UTC; 01131304
+Packaged: 2022-06-13 17:24:01 UTC; 01131304
 Author: Szymon Maksymiuk [aut, cre] (<https://orcid.org/0000-0002-3120-1601>),
   Przemyslaw Biecek [aut] (<https://orcid.org/0000-0001-8423-1823>),
   Hubert Baniecki [aut],
   Anna Kozak [ctb]
 Maintainer: Szymon Maksymiuk <sz.maksymiuk@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-04-23 08:00:17 UTC
+Date/Publication: 2022-06-14 07:30:02 UTC

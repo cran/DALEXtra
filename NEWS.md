@@ -1,3 +1,8 @@
+DALEXtra 2.2.1
+----------------------------------------------------------------
+* fixed `explain_tidymodels` to ignore `residual_function` for classification models.
+* fixed `explain_h2o` examples that might occasionally crash.
+
 DALEXtra 2.2.0
 ----------------------------------------------------------------
 * bump the requirement for `DALEX` to 2.4.0.
