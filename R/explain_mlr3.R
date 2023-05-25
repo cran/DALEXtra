@@ -16,7 +16,8 @@
 #' @rdname explain_mlr3
 #' @export
 #' @examples
-#'library("DALEXtra")
+#' \dontrun{
+#' library("DALEXtra")
 #' library(mlr3)
 #' titanic_imputed$survived <- as.factor(titanic_imputed$survived)
 #' task_classif <- TaskClassif$new(id = "1", backend = titanic_imputed, target = "survived")
@@ -30,6 +31,7 @@
 #' learner_regr <- lrn("regr.rpart")
 #' learner_regr$train(task_regr)
 #' explain_mlr3(learner_regr, data = apartments, apartments$m2.price)
+#' }
 #'
 
 

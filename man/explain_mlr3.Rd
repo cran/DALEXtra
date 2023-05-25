@@ -60,6 +60,7 @@ Unfortunately R packages that create such models are very inconsistent. Differen
 One of those tools, which is one of the most popular one is mlr3 package. We would like to present dedicated explain function for it.
 }
 \examples{
+\dontrun{
 library("DALEXtra")
 library(mlr3)
 titanic_imputed$survived <- as.factor(titanic_imputed$survived)
@@ -74,5 +75,6 @@ task_regr <- TaskRegr$new(id = "2", backend = apartments, target = "m2.price")
 learner_regr <- lrn("regr.rpart")
 learner_regr$train(task_regr)
 explain_mlr3(learner_regr, data = apartments, apartments$m2.price)
+}
 
 }

@@ -15,6 +15,7 @@
 #' @rdname explain_tidymodels
 #' @export
 #' @examples
+#' \dontrun{
 #' library("DALEXtra")
 #' library("tidymodels")
 #' library("recipes")
@@ -35,7 +36,7 @@
 #'                 fit(data = data)
 #'
 #' explain_tidymodels(model_fitted, data = titanic_imputed, y = titanic_imputed$survived)
-#'
+#' }
 #'
 
 

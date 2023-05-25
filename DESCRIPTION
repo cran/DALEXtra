@@ -1,6 +1,6 @@
 Package: DALEXtra
 Title: Extension for 'DALEX' Package
-Version: 2.2.1
+Version: 2.3.0
 Authors@R: 
     c(person(given = "Szymon",
            family = "Maksymiuk",
@@ -28,20 +28,20 @@ Description: Provides wrapper of various machine learning models.
 Depends: R (>= 3.5.0), DALEX (>= 2.4.0)
 License: GPL
 Encoding: UTF-8
-RoxygenNote: 7.1.2
-Imports: reticulate, ggplot2
+RoxygenNote: 7.2.3
+Imports: ggplot2
 Suggests: auditor, gbm, ggrepel, h2o, iml, ingredients, lime,
-        localModel, mlr, mlr3, ranger, recipes, rmarkdown, rpart,
-        stacks, xgboost, testthat, tidymodels
+        localModel, mlr, mlr3, ranger, recipes, reticulate, rmarkdown,
+        rpart, stacks, xgboost, testthat, tidymodels
 URL: https://ModelOriented.github.io/DALEXtra/,
         https://github.com/ModelOriented/DALEXtra
 BugReports: https://github.com/ModelOriented/DALEXtra/issues
 NeedsCompilation: no
-Packaged: 2022-06-13 17:24:01 UTC; 01131304
+Packaged: 2023-05-25 23:48:32 UTC; 01131304
 Author: Szymon Maksymiuk [aut, cre] (<https://orcid.org/0000-0002-3120-1601>),
   Przemyslaw Biecek [aut] (<https://orcid.org/0000-0001-8423-1823>),
   Hubert Baniecki [aut],
   Anna Kozak [ctb]
 Maintainer: Szymon Maksymiuk <sz.maksymiuk@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-06-14 07:30:02 UTC
+Date/Publication: 2023-05-26 00:10:02 UTC

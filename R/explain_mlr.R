@@ -16,6 +16,7 @@
 #' @rdname explain_mlr
 #' @export
 #' @examples
+#' \dontrun{
 #' library("DALEXtra")
 #' titanic_test <- read.csv(system.file("extdata", "titanic_test.csv", package = "DALEXtra"))
 #' titanic_train <- read.csv(system.file("extdata", "titanic_train.csv", package = "DALEXtra"))
@@ -40,6 +41,7 @@
 #' )
 #' gbm <- mlr::train(learner, task)
 #' explain_mlr(gbm, titanic_test[,1:17], titanic_test[,18])
+#' }
 #'
 
 
