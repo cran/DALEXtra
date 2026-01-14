@@ -60,7 +60,6 @@ Unfortunately R packages that create such models are very inconsistent. Differen
 One of those tools, which is one of the most popular one is the tidymodels package. We would like to present dedicated explain function for it.
 }
 \examples{
-\dontrun{
 library("DALEXtra")
 library("tidymodels")
 library("recipes")
@@ -81,6 +80,6 @@ model_fitted <- wflow \%>\%
                 fit(data = data)
 
 explain_tidymodels(model_fitted, data = titanic_imputed, y = titanic_imputed$survived)
-}
+
 
 }
